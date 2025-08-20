@@ -2,15 +2,18 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
-$url = isset($_GET['url']) ? $_GET['url'] : NULL;
+$url = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+
+
 
 if ($url) {
     $url = rtrim($url, '/');
     $url = explode('/', $url);
 
 
+
     if (isset($url[0])) {
-        $controllerName = 'App\\Controllers\\' . $url[0];
+        $controllerName = 'App\\Controllers\\' . ucfirst($url[0]);
 
         if (class_exists($controllerName)) {
             $controller = new $controllerName();

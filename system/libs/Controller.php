@@ -7,8 +7,11 @@ class Controller
 
     public function __construct() {}
 
-    public function view($fileName, $data = [])
+    public function view($fileName, array $data = [])
     {
+        if (!empty($data) && is_array($data)) {
+            extract($data);
+        }
         $filePath = 'app/views/' . $fileName . '.php';
         if (file_exists($filePath)) {
             include $filePath;
