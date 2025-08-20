@@ -13,4 +13,12 @@ class Database extends PDO{
 
         parent::__construct($dsn, $username, $password);
     }
+
+    public function select($table)
+    {
+        $sql = "SELECT * FROM $table";
+        $stmt = $this->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }

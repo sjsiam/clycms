@@ -11,6 +11,4 @@ class Model
     {
         $this->db = new Database();
     }
-
-    
 }

@@ -8,8 +8,6 @@ class Category extends Model
 {
 
     public function catlist() {
-        $sql = "SELECT * FROM categories";
-        $query = $this->db->query($sql);
-        return $query->fetchAll();
+        return $this->db->select('categories');
     }
 }
