@@ -22,10 +22,9 @@ class Controller
 
     public function model($model)
     {
-        $modelPath = 'app/models/' . $model . '.php';
-        if (file_exists($modelPath)) {
-            include $modelPath;
-            return new $model();
+        $modelPath = 'App\\Models\\' . $model;
+        if (class_exists($modelPath)) {
+            return new $modelPath();
         } else {
             throw new \Exception("Model not found: " . $model);
         }

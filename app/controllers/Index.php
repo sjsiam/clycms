@@ -12,6 +12,7 @@ class Index extends Controller
 
     public function category() {
         $category = $this->model("Category");
-        $this->view("category", ['test' => 'You Gorib']);
+        $categories = $category->catlist();
+        $this->view("category", ['categories' => $categories]);
     }
 }
