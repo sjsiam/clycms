@@ -1,32 +1,57 @@
 <?php
 
-namespace System;
-
-class Controller
+abstract class Controller
 {
+    protected $db;
+    protected $theme;
 
-    public function __construct() {}
-
-    public function view($fileName, array $data = [])
+    public function __construct()
     {
-        if (!empty($data) && is_array($data)) {
-            extract($data);
-        }
-        $filePath = 'app/views/' . $fileName . '.php';
-        if (file_exists($filePath)) {
-            include $filePath;
-        } else {
-            throw new \Exception("View not found: " . $fileName);
-        }
+        $this->db = Database::getInstance();
     }
 
-    public function model($model)
+    protected function view($template, $data = [])
     {
-        $modelPath = 'App\\Models\\' . $model;
-        if (class_exists($modelPath)) {
-            return new $modelPath();
-        } else {
-            throw new \Exception("Model not found: " . $model);
+        extract($data);
+
+        $viewFile = APP_PATH . '/views/' . $template . '.php';
+
+        if (!file_exists($viewFile)) {
+            throw new Exception("View file not found: {$template}");
         }
+
+        include $viewFile;
     }
+
+    protected function json($data)
+    {
+        header('Content-Type: application/json');
+        echo json_encode($data);
+        exit;
+    }
+
+    protected function redirect($url)
+    {
+        header("Location: {$url}");
+        exit;
+    }
+
+    protected function renderTheme($template, $data = [])
+    {
+        $themeFile = THEMES_PATH . '/' . $this->theme . '/' . $template . '.php';
+
+        if (!file_exists($themeFile)) {
+            $themeFile = THEMES_PATH . '/default/' . $template . '.php';
+        }
+
+        if (!file_exists($themeFile)) {
+            throw new Exception("Theme template not found: {$template}");
+        }
+
+        extract($data);
+        include $themeFile;
+    }
+
+    // To do  - Add Authentication and Authorization methods
+
 }

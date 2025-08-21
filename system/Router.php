@@ -1,9 +1,5 @@
 <?php
 
-namespace System;
-
-use Exception;
-
 class Router
 {
     private $routes = [];

@@ -1,37 +1,86 @@
 <?php
 
-namespace System;
+class Database
+{
+    private static $instance = null;
+    private $pdo;
 
-use PDO;
-
-class Database extends PDO{
-    public function __construct()
+    private function __construct()
     {
-        $dsn = 'mysql:host=localhost;dbname=clycms';
-        $username = 'root';
-        $password = '';
+        $config = Config::get('database');
 
-        parent::__construct($dsn, $username, $password);
+        try {
+            $this->pdo = new PDO(
+                "mysql:host={$config['host']};dbname={$config['database']};charset=utf8mb4",
+                $config['username'],
+                $config['password'],
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false
+                ]
+            );
+        } catch (PDOException $e) {
+            throw new Exception("Database connection failed: " . $e->getMessage());
+        }
     }
 
-    public function select($sql, $data = [], $fetchMode = PDO::FETCH_ASSOC)
+    public static function getInstance()
     {
-        $stmt = $this->prepare($sql);
-        foreach ($data as $key => $value) {
-            $stmt->bindValue($key, $value);
+        if (self::$instance === null) {
+            self::$instance = new self();
         }
-        $stmt->execute();
-        return $stmt->fetchAll($fetchMode);
+        return self::$instance;
     }
 
-    public function insert($table, $data){
-        $columns = implode(", ", array_keys($data));
-        $placeholders = ":" . implode(", :", array_keys($data));
-        $sql = "INSERT INTO {$table} ({$columns}) VALUES ({$placeholders})";
-        $stmt = $this->prepare($sql);
-        foreach ($data as $key => $value) {
-            $stmt->bindValue(":$key", $value);
+    public function query($sql, $params = [])
+    {
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt;
+    }
+
+    public function fetchAll($sql, $params = [])
+    {
+        return $this->query($sql, $params)->fetchAll();
+    }
+
+    public function fetchOne($sql, $params = [])
+    {
+        return $this->query($sql, $params)->fetch();
+    }
+
+    public function insert($table, $data)
+    {
+        $fields = implode(',', array_keys($data));
+        $placeholders = ':' . implode(', :', array_keys($data));
+
+        $sql = "INSERT INTO {$table} ({$fields}) VALUES ({$placeholders})";
+        $this->query($sql, $data);
+
+        return $this->pdo->lastInsertId();
+    }
+
+    public function update($table, $data, $where, $whereParams = [])
+    {
+        $fields = [];
+        foreach (array_keys($data) as $field) {
+            $fields[] = "{$field} = :{$field}";
         }
-        return $stmt->execute();
+        $fields = implode(', ', $fields);
+
+        $sql = "UPDATE {$table} SET {$fields} WHERE {$where}";
+        return $this->query($sql, array_merge($data, $whereParams));
+    }
+
+    public function delete($table, $where, $params = [])
+    {
+        $sql = "DELETE FROM {$table} WHERE {$where}";
+        return $this->query($sql, $params);
+    }
+
+    public function lastInsertId()
+    {
+        return $this->pdo->lastInsertId();
     }
 }
