@@ -11,8 +11,6 @@ class PublicController extends Controller
 
     public function home()
     {
-
-
         $this->renderTheme('index');
     }
 }
