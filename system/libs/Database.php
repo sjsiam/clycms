@@ -14,11 +14,24 @@ class Database extends PDO{
         parent::__construct($dsn, $username, $password);
     }
 
-    public function select($table)
+    public function select($sql, $data = [], $fetchMode = PDO::FETCH_ASSOC)
     {
-        $sql = "SELECT * FROM $table";
         $stmt = $this->prepare($sql);
+        foreach ($data as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
         $stmt->execute();
-        return $stmt->fetchAll();
+        return $stmt->fetchAll($fetchMode);
+    }
+
+    public function insert($table, $data){
+        $columns = implode(", ", array_keys($data));
+        $placeholders = ":" . implode(", :", array_keys($data));
+        $sql = "INSERT INTO {$table} ({$columns}) VALUES ({$placeholders})";
+        $stmt = $this->prepare($sql);
+        foreach ($data as $key => $value) {
+            $stmt->bindValue(":$key", $value);
+        }
+        return $stmt->execute();
     }
 }

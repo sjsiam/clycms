@@ -7,7 +7,10 @@ use System\Libs\Model;
 class Category extends Model
 {
 
+    protected $table = 'categories';
+
     public function catlist() {
-        return $this->db->select('categories');
+        $sql = "SELECT * FROM categories";
+        return $this->db->select($sql);
     }
 }
