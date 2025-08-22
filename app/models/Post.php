@@ -10,6 +10,7 @@ class Post extends Model
         'excerpt',
         'status',
         'author_id',
+        'post_type',
         'featured_image',
         'meta_title',
         'meta_description'

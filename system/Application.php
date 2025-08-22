@@ -46,7 +46,10 @@ class Application
         $this->router->add('admin/posts/delete/{id}', 'PostController@delete', 'POST');
         $this->router->add('admin/pages', 'PageController@index');
         $this->router->add('admin/pages/create', 'PageController@create');
+        $this->router->add('admin/pages/create', 'PageController@create', 'POST');
         $this->router->add('admin/pages/edit/{id}', 'PageController@edit');
+        $this->router->add('admin/pages/edit/{id}', 'PageController@edit', 'POST');
+        $this->router->add('admin/pages/delete/{id}', 'PageController@delete', 'POST');
         $this->router->add('admin/media', 'MediaController@index');
         $this->router->add('admin/users', 'UserController@index');
         $this->router->add('admin/users/create', 'UserController@create');

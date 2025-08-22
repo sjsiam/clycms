@@ -96,13 +96,10 @@ class PostController extends Controller
                 return;
             }
 
-            // Delete post categories
             $this->db->delete('post_categories', 'post_id = ?', [$id]);
 
-            // Delete post tags
             $this->db->delete('post_tags', 'post_id = ?', [$id]);
 
-            // Delete the post
             $this->post->delete($id);
 
             $this->redirect('/admin/posts');
@@ -158,9 +155,27 @@ class PostController extends Controller
         }
     }
 
-    private function generateSlug($title)
+    private function generateSlug($title, $id = null)
     {
-        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
+        $baseSlug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
+        $slug = $baseSlug;
+        $counter = 1;
+
+        $sql = "SELECT slug FROM posts WHERE slug = ? AND post_type = 'post'";
+        if ($id) {
+            $sql .= " AND id != ?";
+        }
+        $params = [$slug];
+        if ($id) {
+            $params[] = $id;
+        }
+
+        while ($this->db->fetchOne($sql, $params)) {
+            $slug = $baseSlug . '-' . $counter;
+            $params[0] = $slug;
+            $counter++;
+        }
+
         return $slug;
     }
 
