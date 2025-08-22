@@ -16,23 +16,23 @@ class Post extends Model
         'meta_description'
     ];
 
-    public function getPublished()
+    public function getPublished($post_type = 'post')
     {
         $sql = "SELECT p.*, u.name as author_name 
                 FROM {$this->table} p 
                 JOIN users u ON p.author_id = u.id 
-                WHERE p.status = 'published' AND p.post_type = 'post'
+                WHERE p.status = 'published' AND p.post_type = ?
                 ORDER BY p.created_at DESC";
-        return $this->db->fetchAll($sql);
+        return $this->db->fetchAll($sql, [$post_type]);
     }
 
-    public function getBySlug($slug)
+    public function getBySlug($slug, $post_type = 'post')
     {
         $sql = "SELECT p.*, u.name as author_name 
                 FROM {$this->table} p 
                 JOIN users u ON p.author_id = u.id 
-                WHERE p.slug = ? AND p.status = 'published'";
-        return $this->db->fetchOne($sql, [$slug]);
+                WHERE p.slug = ? AND p.post_type = ? AND p.status = 'published'";
+        return $this->db->fetchOne($sql, [$slug, $post_type]);
     }
 
     public function getByCategory($categoryId)

@@ -176,6 +176,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/admin">Admin</a>
                     </li>
+                    <?php
+                        foreach ($navigations as $nav) {
+                            echo '<li class="nav-item"><a class="nav-link" href="/' . $nav['slug'] . '">' . $nav['title'] . '</a></li>';
+                        }
+                    ?>
                 </ul>
 
                 <form class="d-flex ms-3 search-form" action="/search" method="GET">

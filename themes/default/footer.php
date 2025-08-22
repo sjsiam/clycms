@@ -49,7 +49,7 @@
             </div>
             <div class="col-md-6 text-md-end">
                 <small class="text-muted">
-                    Powered by Custom PHP MVC Framework
+                    Powered by ClyCMS - A modern PHP CMS
                 </small>
             </div>
         </div>

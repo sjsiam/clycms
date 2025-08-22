@@ -4,6 +4,7 @@ abstract class Controller
 {
     protected $db;
     protected $theme;
+    protected $sharedData = [];
 
     public function __construct()
     {
@@ -47,6 +48,8 @@ abstract class Controller
 
     protected function renderTheme($template, $data = [])
     {
+        $data = array_merge($this->sharedData, $data);
+
         $themeFile = THEMES_PATH . '/' . $this->theme . '/' . $template . '.php';
 
         if (!file_exists($themeFile)) {

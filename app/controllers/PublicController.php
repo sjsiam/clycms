@@ -2,10 +2,26 @@
 
 class PublicController extends Controller
 {
+    protected $navigations = [];
     public function __construct()
     {
         parent::__construct();
         $this->theme = Config::get('app.theme', 'default');
+        $this->loadNavigation();
+        $this->sharedData['navigations'] = $this->navigations;
+    }
+
+    protected function loadNavigation()
+    {
+        $post = new Post();
+        $pages = $post->getPublished('page');
+
+        foreach ($pages as $page) {
+            $this->navigations[] = [
+                'title' => $page['title'],
+                'slug' => $page['slug'],
+            ];
+        }
     }
 
     public function home()
@@ -20,7 +36,6 @@ class PublicController extends Controller
     {
         $post = new Post();
         $postData = $post->getBySlug($slug);
-
         if (!$postData) {
             http_response_code(404);
             $this->renderTheme('404');
@@ -100,5 +115,4 @@ class PublicController extends Controller
 
         echo '</urlset>';
     }
-
 }
