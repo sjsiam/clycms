@@ -108,6 +108,7 @@ CREATE TABLE IF NOT EXISTS media (
 +   height INT DEFAULT NULL,
     alt_text VARCHAR(255),
     caption TEXT,
+    description TEXT,
     uploaded_by INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

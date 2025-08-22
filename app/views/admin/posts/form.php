@@ -214,9 +214,6 @@ include dirname(__DIR__) . '/includes/header.php';
                         <button type="button" class="btn btn-outline-primary" onclick="openFeaturedImagePicker()">
                             <i class="fas fa-images"></i> Choose from Media Library
                         </button>
-                        <button type="button" class="btn btn-outline-secondary" onclick="document.getElementById('featured-image-input').click()">
-                            <i class="fas fa-upload"></i> Upload New Image
-                        </button>
                     </div>
 
                     <?php if (!empty($post['featured_image'])): ?>
