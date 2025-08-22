@@ -4,6 +4,8 @@ $page_title = $is_edit ? 'Edit Page' : 'Create New Page';
 $page_subtitle = $is_edit ? 'Update your existing page' : 'Write and publish a new page';
 $page_description = $is_edit ? 'Edit page - ' . htmlspecialchars($page['title']) : 'Create a new website page';
 $include_editor = true;
+$additional_css = ['/css/media-picker.css'];
+$additional_js = ['/js/media-picker.js'];
 include dirname(__DIR__) . '/includes/header.php';
 ?>
 
@@ -150,7 +152,18 @@ include dirname(__DIR__) . '/includes/header.php';
                         class="form-control mb-2"
                         name="featured_image"
                         accept="image/*"
-                        onchange="previewImage(this)">
+                        onchange="previewImage(this)"
+                        style="display: none;"
+                        id="featured-image-input">
+                    
+                    <div class="d-grid gap-2 mb-2">
+                        <button type="button" class="btn btn-outline-primary" onclick="openFeaturedImagePicker()">
+                            <i class="fas fa-images"></i> Choose from Media Library
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="document.getElementById('featured-image-input').click()">
+                            <i class="fas fa-upload"></i> Upload New Image
+                        </button>
+                    </div>
 
                     <?php if (!empty($page['featured_image'])): ?>
                         <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeFeaturedImage()">
@@ -158,6 +171,8 @@ include dirname(__DIR__) . '/includes/header.php';
                         </button>
                         <input type="hidden" name="remove_featured_image" id="remove_featured_image" value="0">
                     <?php endif; ?>
+                    
+                    <input type="hidden" name="featured_image_id" id="featured_image_id" value="">
                 </div>
             </div>
         </div>
@@ -166,6 +181,25 @@ include dirname(__DIR__) . '/includes/header.php';
 
 <?php
 $inline_js = "
+// Featured image picker
+function openFeaturedImagePicker() {
+    openMediaPicker({
+        multiple: false,
+        type: 'image',
+        onSelect: function(media) {
+            // Update preview
+            const preview = document.querySelector('.featured-image-preview');
+            preview.innerHTML = '<img src=\"' + media.file_path + '\" class=\"img-fluid rounded\" style=\"max-height: 200px;\" alt=\"Featured Image\">';
+            
+            // Set hidden field
+            document.getElementById('featured_image_id').value = media.id;
+            
+            // Clear file input
+            document.getElementById('featured-image-input').value = '';
+        }
+    });
+}
+
 function generateSlug(title) {
     const slug = title.toLowerCase()
         .replace(/[^a-z0-9 -]/g, '')
@@ -188,6 +222,7 @@ function previewImage(input) {
 
 function removeFeaturedImage() {
     document.getElementById('remove_featured_image').value = '1';
+    document.getElementById('featured_image_id').value = '';
     const preview = document.querySelector('.featured-image-preview');
     preview.innerHTML = '<div class=\"border rounded p-4\" style=\"min-height: 150px; background: #f8f9fa;\"><i class=\"fas fa-image fa-3x text-muted mb-2\"></i><p class=\"text-muted\">Image will be removed</p></div>';
 }

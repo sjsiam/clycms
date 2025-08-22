@@ -131,6 +131,13 @@ class PostController extends Controller
             // Handle featured image upload
             if (isset($_FILES['featured_image']) && $_FILES['featured_image']['error'] === UPLOAD_ERR_OK) {
                 $data['featured_image'] = $this->handleImageUpload($_FILES['featured_image']);
+            } elseif (isset($_POST['featured_image_id']) && !empty($_POST['featured_image_id'])) {
+                // Handle media library selection
+                $media = new Media();
+                $mediaFile = $media->find($_POST['featured_image_id']);
+                if ($mediaFile) {
+                    $data['featured_image'] = $mediaFile['file_path'];
+                }
             } elseif (isset($_POST['remove_featured_image']) && $_POST['remove_featured_image'] === '1') {
                 $data['featured_image'] = null;
             }

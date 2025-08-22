@@ -51,6 +51,13 @@ class Application
         $this->router->add('admin/pages/edit/{id}', 'PageController@edit', 'POST');
         $this->router->add('admin/pages/delete/{id}', 'PageController@delete', 'POST');
         $this->router->add('admin/media', 'MediaController@index');
+        $this->router->add('admin/media/upload', 'MediaController@upload');
+        $this->router->add('admin/media/upload', 'MediaController@upload', 'POST');
+        $this->router->add('admin/media/edit/{id}', 'MediaController@edit');
+        $this->router->add('admin/media/edit/{id}', 'MediaController@edit', 'POST');
+        $this->router->add('admin/media/delete/{id}', 'MediaController@delete', 'POST');
+        $this->router->add('admin/media/library', 'MediaController@library');
+        $this->router->add('admin/media/details/{id}', 'MediaController@details');
         $this->router->add('admin/users', 'UserController@index');
         $this->router->add('admin/users/create', 'UserController@create');
         $this->router->add('admin/users/create', 'UserController@create', 'POST');
