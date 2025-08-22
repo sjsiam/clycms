@@ -27,6 +27,7 @@ class Application
         // Admin routes
         $this->router->add('admin', 'AdminController@dashboard');
         $this->router->add('admin/login', 'AuthController@login');
+        $this->router->add('admin/login', 'AuthController@login', 'POST');
         $this->router->add('admin/logout', 'AuthController@logout');
         $this->router->add('admin/posts', 'PostController@index');
         $this->router->add('admin/posts/create', 'PostController@create');

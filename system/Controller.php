@@ -52,6 +52,20 @@ abstract class Controller
         include $themeFile;
     }
 
-    // To do  - Add Authentication and Authorization methods
+    protected function requireAuth()
+    {
+        if (!Auth::check()) {
+            $this->redirect('/admin/login');
+        }
+    }
 
+    protected function requireRole($role)
+    {
+        $this->requireAuth();
+        if (!Auth::hasRole($role)) {
+            http_response_code(403);
+            $this->view('errors/403');
+            exit;
+        }
+    }
 }

@@ -15,3 +15,15 @@ if (file_exists($envFile)) {
         $_SERVER[$key] = $value;
     }
 }
+
+if (!function_exists('dd')) {
+    function dd(...$vars)
+    {
+        echo '<pre style="background:#f8f9fa; color:#333; padding:15px; border-radius:5px;">';
+        foreach ($vars as $var) {
+            var_dump($var);
+        }
+        echo '</pre>';
+        exit;
+    }
+}
