@@ -31,7 +31,9 @@ class Application
         $this->router->add('admin/logout', 'AuthController@logout');
         $this->router->add('admin/posts', 'PostController@index');
         $this->router->add('admin/posts/create', 'PostController@create');
+        $this->router->add('admin/posts/create', 'PostController@create', 'POST');
         $this->router->add('admin/posts/edit/{id}', 'PostController@edit');
+        $this->router->add('admin/posts/edit/{id}', 'PostController@edit', 'POST');
         $this->router->add('admin/pages', 'PageController@index');
         $this->router->add('admin/media', 'MediaController@index');
         $this->router->add('admin/users', 'UserController@index');
