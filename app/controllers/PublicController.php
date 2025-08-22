@@ -87,6 +87,17 @@ class PublicController extends Controller
         if ($query) {
             $post = new Post();
             $posts = $post->search($query);
+
+            // Add URL for each post
+            foreach ($posts as &$p) {
+                if ($p['post_type'] === 'post') {
+                    $p['url'] = '/post/' . $p['slug'];
+                } elseif ($p['post_type'] === 'page') {
+                    $p['url'] = '/' . $p['slug'];
+                } else {
+                    $p['url'] = '/' . $p['slug']; // fallback
+                }
+            }
         }
 
         $this->renderTheme('search', [
