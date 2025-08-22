@@ -17,7 +17,6 @@ class PostController extends Controller
 
     public function index()
     {
-        // Handle search and filtering
         $search = $_GET['search'] ?? '';
         $status = $_GET['status'] ?? '';
 
@@ -128,11 +127,9 @@ class PostController extends Controller
                 'meta_description' => $_POST['meta_description'] ?? ''
             ];
 
-            // Handle featured image upload
             if (isset($_FILES['featured_image']) && $_FILES['featured_image']['error'] === UPLOAD_ERR_OK) {
                 $data['featured_image'] = $this->handleImageUpload($_FILES['featured_image']);
             } elseif (isset($_POST['featured_image_id']) && !empty($_POST['featured_image_id'])) {
-                // Handle media library selection
                 $media = new Media();
                 $mediaFile = $media->find($_POST['featured_image_id']);
                 if ($mediaFile) {
@@ -143,37 +140,32 @@ class PostController extends Controller
             }
 
             if ($id) {
-                // Update existing post
                 $this->post->update($id, $data);
                 $postId = $id;
                 $success_message = 'Post updated successfully!';
             } else {
-                // Create new post
                 $data['author_id'] = Auth::id();
                 $postId = $this->post->create($data);
                 $success_message = 'Post created successfully!';
             }
 
-            // Handle categories
             if (isset($_POST['categories'])) {
                 $this->updateCategories($postId, $_POST['categories']);
             } else {
-                // Remove all categories if none selected
                 $this->db->delete('post_categories', 'post_id = ?', [$postId]);
             }
 
-            // Handle tags
             if (isset($_POST['tags']) && !empty($_POST['tags'])) {
                 $this->updateTags($postId, $_POST['tags']);
             } else {
-                // Remove all tags if none provided
                 $this->db->delete('post_tags', 'post_id = ?', [$postId]);
             }
 
-            $this->redirect('/admin/posts');
+            $this->redirect('/admin/posts', [
+                'success' => $success_message
+            ]);
         } catch (Exception $e) {
             $error_message = 'Error saving post: ' . $e->getMessage();
-            // Re-display form with error
             return $this->create();
         }
     }
@@ -212,7 +204,6 @@ class PostController extends Controller
         $fileName = time() . '_' . basename($file['name']);
         $targetPath = $uploadDir . $fileName;
 
-        // Validate file type
         $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
         if (!in_array($file['type'], $allowedTypes)) {
             throw new Exception('Invalid file type. Only JPEG, PNG, GIF, and WebP are allowed.');
