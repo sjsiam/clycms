@@ -104,6 +104,8 @@ CREATE TABLE IF NOT EXISTS media (
     file_path VARCHAR(255) NOT NULL,
     file_size INT NOT NULL,
     mime_type VARCHAR(100) NOT NULL,
+    width INT DEFAULT NULL,
++   height INT DEFAULT NULL,
     alt_text VARCHAR(255),
     caption TEXT,
     uploaded_by INT,
