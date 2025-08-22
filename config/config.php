@@ -13,7 +13,6 @@ $config['database'] = [
 $config['app'] = [
     'name' => 'ClyCMS',
     'url' => $_ENV['APP_URL'] ?? 'https://clycms.com',
-    'theme' => $_ENV['APP_THEME'] ?? 'default',
     'timezone' => $_ENV['APP_TIMEZONE'] ?? 'UTC',
 ];
 

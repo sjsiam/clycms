@@ -20,7 +20,7 @@ class Application
         } catch (RouteNotFoundException $e) {
             http_response_code(404);
 
-            $errorPage = THEMES_PATH . '/' . $_ENV['APP_THEME'] . '/404.php';
+            $errorPage = THEMES_PATH . '/' . Config::getActiveTheme() . '/404.php';
             if (file_exists($errorPage)) {
                 include $errorPage;
             } else {
@@ -58,6 +58,7 @@ class Application
         $this->router->add('admin/users/edit/{id}', 'UserController@edit', 'POST');
         $this->router->add('admin/users/delete/{id}', 'UserController@delete', 'POST');
         $this->router->add('admin/themes', 'ThemeController@index');
+        $this->router->add('admin/themes', 'ThemeController@index', 'POST');
         $this->router->add('admin/plugins', 'PluginController@index');
         $this->router->add('admin/settings', 'SettingsController@index');
         $this->router->add('admin/settings', 'SettingsController@index', 'POST');

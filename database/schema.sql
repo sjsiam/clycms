@@ -172,6 +172,7 @@ INSERT IGNORE INTO categories (name, slug, description) VALUES
 INSERT IGNORE INTO options (option_name, option_value) VALUES
 ('site_title', 'My CMS Site'),
 ('site_description', 'A powerful PHP CMS built with MVC architecture'),
+('active_theme', 'default'),
 ('posts_per_page', '10'),
 ('date_format', 'F j, Y'),
 ('time_format', 'g:i a'),

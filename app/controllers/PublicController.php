@@ -6,7 +6,7 @@ class PublicController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->theme = Config::get('app.theme', 'default');
+        $this->theme = Config::getActiveTheme();
         $this->loadNavigation();
         $this->sharedData['navigations'] = $this->navigations;
     }
