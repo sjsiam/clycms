@@ -85,22 +85,11 @@ class ThemeController extends Controller
                 throw new Exception("No action or theme specified.");
             }
 
-            // Reload themes and active theme
-            $themes = $this->getThemesList();
-            $active_theme = $this->db->fetchOne(
-                "SELECT option_value FROM options WHERE option_name = ?",
-                ['active_theme']
-            )['option_value'] ?? Config::getActiveTheme() ?? 'default';
 
             $this->redirect('/admin/themes', [
                 'success' => $success_message
             ]);
         } catch (Exception $e) {
-            $themes = $this->getThemesList();
-            $active_theme = $this->db->fetchOne(
-                "SELECT option_value FROM options WHERE option_name = ?",
-                ['active_theme']
-            )['option_value'] ?? Config::getActiveTheme() ?? 'default';
 
             $this->redirect('/admin/themes', [
                 'error' => 'Error: ' . $e->getMessage()
