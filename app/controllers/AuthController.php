@@ -4,7 +4,10 @@ class AuthController extends Controller
 {
     public function login()
     {
-        $error = null;
+        if (Auth::check()) {
+            $this->redirect('/admin');
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
