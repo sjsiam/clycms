@@ -17,6 +17,15 @@ class ThemeController extends Controller
             return $this->handleThemeAction();
         }
 
+        if (isset($_SESSION['success'])) {
+            $success_message = $_SESSION['success'];
+            unset($_SESSION['success']);
+        }
+        if (isset($_SESSION['error'])) {
+            $error_message = $_SESSION['error'];
+            unset($_SESSION['error']);
+        }
+
         // Get list of themes (folders with index.php)
         $themes = $this->getThemesList();
 
@@ -28,7 +37,9 @@ class ThemeController extends Controller
 
         $this->view('admin/themes/index', [
             'themes' => $themes,
-            'active_theme' => $active_theme
+            'active_theme' => $active_theme,
+            'success_message' => $success_message ?? null,
+            'error_message' => $error_message ?? null
         ]);
     }
 
@@ -81,10 +92,8 @@ class ThemeController extends Controller
                 ['active_theme']
             )['option_value'] ?? Config::getActiveTheme() ?? 'default';
 
-            $this->view('admin/themes/index', [
-                'themes' => $themes,
-                'active_theme' => $active_theme,
-                'success_message' => $success_message
+            $this->redirect('/admin/themes', [
+                'success' => $success_message
             ]);
         } catch (Exception $e) {
             $themes = $this->getThemesList();
@@ -93,10 +102,8 @@ class ThemeController extends Controller
                 ['active_theme']
             )['option_value'] ?? Config::getActiveTheme() ?? 'default';
 
-            $this->view('admin/themes/index', [
-                'themes' => $themes,
-                'active_theme' => $active_theme,
-                'error_message' => 'Error: ' . $e->getMessage()
+            $this->redirect('/admin/themes', [
+                'error' => 'Error: ' . $e->getMessage()
             ]);
         }
     }
