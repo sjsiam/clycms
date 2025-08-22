@@ -33,11 +33,16 @@ include 'header.php';
             </div>
         </div>
     <?php else: ?>
-        <div class="row">
+        <div class="row g-4">
             <?php foreach ($posts as $post): ?>
                 <div class="col-lg-6">
                     <div class="card post-card h-100">
                         <div class="card-body">
+                            <?php if ($post['featured_image']): ?>
+                                <a href="/post/<?= $post['slug'] ?>">
+                                    <img src="<?= htmlspecialchars($post['featured_image']) ?>" class="card-img-top mb-3" alt="<?= htmlspecialchars($post['title']) ?>">
+                                </a>
+                            <?php endif; ?>
                             <h5 class="card-title">
                                 <a href="/post/<?= $post['slug'] ?>" class="text-decoration-none">
                                     <?= htmlspecialchars($post['title']) ?>

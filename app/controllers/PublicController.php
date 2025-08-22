@@ -48,15 +48,15 @@ class PublicController extends Controller
     public function page($slug)
     {
         $post = new Post();
-        $page = $post->getBySlug($slug, 'page');
+        $post = $post->getBySlug($slug, 'page');
 
-        if (!$page) {
+        if (!$post) {
             http_response_code(404);
             $this->renderTheme('404');
             return;
         }
 
-        $this->renderTheme('page', ['page' => $page]);
+        $this->renderTheme('page', ['post' => $post]);
     }
 
     public function category($slug)

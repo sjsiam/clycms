@@ -1,6 +1,6 @@
 <?php
-$page_title = htmlspecialchars($page['meta_title'] ?: $page['title']) . ' - ' . Config::get('app.name', 'My CMS Site');
-$page_description = htmlspecialchars($page['meta_description'] ?: $page['excerpt'] ?: substr(strip_tags($page['content']), 0, 160));
+$post_title = htmlspecialchars($post['meta_title'] ?: $post['title']) . ' - ' . Config::get('app.name', 'My CMS Site');
+$post_description = htmlspecialchars($post['meta_description'] ?: $post['excerpt'] ?: substr(strip_tags($post['content']), 0, 160));
 
 // Additional styles for single page
 $additional_css = [];
@@ -53,26 +53,26 @@ include 'header.php';
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <?php if ($page['featured_image']): ?>
+                <?php if ($post['featured_image']): ?>
                     <div class="mb-4">
-                        <img src="<?= htmlspecialchars($page['featured_image']) ?>"
+                        <img src="<?= htmlspecialchars($post['featured_image']) ?>"
                             class="img-fluid rounded"
-                            alt="<?= htmlspecialchars($page['title']) ?>"
+                            alt="<?= htmlspecialchars($post['title']) ?>"
                             style="max-height: 300px; width: 100%; object-fit: cover;">
                     </div>
                 <?php endif; ?>
 
-                <h1 class="display-5 mb-4"><?= htmlspecialchars($page['title']) ?></h1>
+                <h1 class="display-5 mb-4"><?= htmlspecialchars($post['title']) ?></h1>
                 <div class="page-meta">
                     <i class="fas fa-user me-1"></i>
-                    By <?= htmlspecialchars($page['author_name']) ?>
+                    By <?= htmlspecialchars($post['author_name']) ?>
                     <span class="mx-3">•</span>
                     <i class="fas fa-calendar me-1"></i>
-                    <?= date('F j, Y', strtotime($page['created_at'])) ?>
-                    <?php if ($page['updated_at'] !== $page['created_at']): ?>
+                    <?= date('F j, Y', strtotime($post['created_at'])) ?>
+                    <?php if ($post['updated_at'] !== $post['created_at']): ?>
                         <span class="mx-3">•</span>
                         <i class="fas fa-edit me-1"></i>
-                        Updated <?= date('F j, Y', strtotime($page['updated_at'])) ?>
+                        Updated <?= date('F j, Y', strtotime($post['updated_at'])) ?>
                     <?php endif; ?>
                 </div>
             </div>
@@ -84,7 +84,7 @@ include 'header.php';
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <article class="page-content">
-                <?= $page['content'] ?>
+                <?= $post['content'] ?>
             </article>
 
             <hr class="my-5">
@@ -122,8 +122,8 @@ include 'header.php';
 $inline_js = "
         function sharePage(platform) {
             const url = encodeURIComponent(window.location.href);
-            const title = encodeURIComponent('" . addslashes($page['title']) . "');
-            const text = encodeURIComponent('" . addslashes($page['excerpt'] ?: substr(strip_tags($page['content']), 0, 100)) . "');
+            const title = encodeURIComponent('" . addslashes($post['title']) . "');
+            const text = encodeURIComponent('" . addslashes($post['excerpt'] ?: substr(strip_tags($post['content']), 0, 100)) . "');
 
             let shareUrl = '';
 
@@ -156,7 +156,7 @@ $inline_js = "
                 default:
                     if (navigator.share) {
                         navigator.share({
-                            title: '" . addslashes($page['title']) . "',
+                            title: '" . addslashes($post['title']) . "',
                             url: window.location.href
                         });
                         return;
