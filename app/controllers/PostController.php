@@ -4,6 +4,7 @@ class PostController extends Controller
 {
     private $post;
     private $category;
+    private $tag;
 
     public function __construct()
     {
@@ -11,6 +12,7 @@ class PostController extends Controller
         $this->requireAuth();
         $this->post = new Post();
         $this->category = new Category();
+        $this->tag = new Tag();
     }
 
     public function index()
@@ -52,7 +54,8 @@ class PostController extends Controller
 
         $this->view('admin/posts/form', [
             'categories' => $categories,
-            'post_categories' => []
+            'post_categories' => [],
+            'post_tags' => []
         ]);
     }
 
@@ -79,10 +82,15 @@ class PostController extends Controller
         );
         $postCategoryIds = array_column($postCategories, 'category_id');
 
+        // Get post tags
+        $postTags = $this->tag->getPostTags($id);
+        $postTagNames = array_column($postTags, 'name');
+
         $this->view('admin/posts/form', [
             'post' => $post,
             'categories' => $categories,
-            'post_categories' => $postCategoryIds
+            'post_categories' => $postCategoryIds,
+            'post_tags' => $postTagNames
         ]);
     }
 
@@ -145,6 +153,14 @@ class PostController extends Controller
             } else {
                 // Remove all categories if none selected
                 $this->db->delete('post_categories', 'post_id = ?', [$postId]);
+            }
+
+            // Handle tags
+            if (isset($_POST['tags']) && !empty($_POST['tags'])) {
+                $this->updateTags($postId, $_POST['tags']);
+            } else {
+                // Remove all tags if none provided
+                $this->db->delete('post_tags', 'post_id = ?', [$postId]);
             }
 
             $this->redirect('/admin/posts');
@@ -219,5 +235,28 @@ class PostController extends Controller
 
         // Add new categories
         $this->assignCategories($postId, $categories);
+    }
+
+    private function updateTags($postId, $tagsString)
+    {
+        // Remove existing tags
+        $this->db->delete('post_tags', 'post_id = ?', [$postId]);
+
+        // Parse tags string (comma-separated)
+        $tagNames = array_map('trim', explode(',', $tagsString));
+        $tagNames = array_filter($tagNames); // Remove empty values
+
+        foreach ($tagNames as $tagName) {
+            if (!empty($tagName)) {
+                // Find or create tag
+                $tag = $this->tag->findOrCreate($tagName);
+                
+                // Associate with post
+                $this->db->insert('post_tags', [
+                    'post_id' => $postId,
+                    'tag_id' => $tag['id']
+                ]);
+            }
+        }
     }
 }

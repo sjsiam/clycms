@@ -46,6 +46,17 @@ class Post extends Model
         return $this->db->fetchAll($sql, [$categoryId]);
     }
 
+    public function getByTag($tagId)
+    {
+        $sql = "SELECT p.*, u.name as author_name 
+                FROM {$this->table} p 
+                JOIN users u ON p.author_id = u.id 
+                JOIN post_tags pt ON p.id = pt.post_id 
+                WHERE pt.tag_id = ? AND p.status = 'published'
+                ORDER BY p.created_at DESC";
+        return $this->db->fetchAll($sql, [$tagId]);
+    }
+
     public function search($query)
     {
         $sql = "SELECT p.*, u.name as author_name 

@@ -75,6 +75,22 @@ include 'header.php';
                         Updated <?= date('F j, Y', strtotime($post['updated_at'])) ?>
                     <?php endif; ?>
                 </div>
+                
+                <?php
+                // Get post tags
+                $tag = new Tag();
+                $postTags = $tag->getPostTags($post['id']);
+                if (!empty($postTags)):
+                ?>
+                    <div class="post-tags mt-3">
+                        <i class="fas fa-tags me-2"></i>
+                        <?php foreach ($postTags as $index => $postTag): ?>
+                            <a href="/tag/<?= $postTag['slug'] ?>" class="badge bg-secondary text-decoration-none me-1">
+                                <?= htmlspecialchars($postTag['name']) ?>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
