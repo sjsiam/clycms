@@ -5,11 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Dynamic Title and SEO -->
     <title><?= htmlspecialchars($page_title ?? Config::get('app.name', 'My CMS Site')) ?></title>
     <meta name="description" content="<?= htmlspecialchars($page_description ?? Config::get('app.description', 'A powerful PHP CMS')) ?>">
 
-    <!-- SEO Meta Tags -->
     <?php if (isset($post) && $post): ?>
         <meta property="og:title" content="<?= htmlspecialchars($post['meta_title'] ?: $post['title']) ?>">
         <meta property="og:description" content="<?= htmlspecialchars($post['meta_description'] ?: $post['excerpt']) ?>">
@@ -24,14 +22,11 @@
         <meta name="twitter:description" content="<?= htmlspecialchars($post['meta_description'] ?: $post['excerpt']) ?>">
     <?php endif; ?>
 
-    <!-- Canonical URL -->
     <link rel="canonical" href="<?= Config::get('app.url') . $_SERVER['REQUEST_URI'] ?>">
 
-    <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
-    <!-- Custom Theme Styles -->
     <style>
         :root {
             --primary-color: #667eea;
@@ -124,7 +119,6 @@
     </style>
 
     <?php
-    // Plugin hooks - clycms_head
     if (isset($app) && method_exists($app, 'getPluginManager')) {
 
         $pluginManager = $app->getPluginManager();
@@ -134,14 +128,12 @@
     ?>
 
 
-    <!-- Additional CSS from theme -->
     <?php if (isset($additional_css)): ?>
         <?php foreach ($additional_css as $css): ?>
             <link href="<?= $css ?>" rel="stylesheet">
         <?php endforeach; ?>
     <?php endif; ?>
 
-    <!-- JSON-LD Structured Data -->
     <?php if (isset($post) && $post): ?>
         <script type="application/ld+json">
             {
