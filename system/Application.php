@@ -53,9 +53,14 @@ class Application
         $this->router->add('admin/media', 'MediaController@index');
         $this->router->add('admin/users', 'UserController@index');
         $this->router->add('admin/users/create', 'UserController@create');
+        $this->router->add('admin/users/create', 'UserController@create', 'POST');
+        $this->router->add('admin/users/edit/{id}', 'UserController@edit');
+        $this->router->add('admin/users/edit/{id}', 'UserController@edit', 'POST');
+        $this->router->add('admin/users/delete/{id}', 'UserController@delete', 'POST');
         $this->router->add('admin/themes', 'ThemeController@index');
         $this->router->add('admin/plugins', 'PluginController@index');
         $this->router->add('admin/settings', 'SettingsController@index');
+        $this->router->add('admin/settings', 'SettingsController@index', 'POST');
 
         // API routes
         $this->router->add('api/posts', 'ApiController@posts');

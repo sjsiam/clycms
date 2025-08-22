@@ -30,8 +30,17 @@ abstract class Controller
         exit;
     }
 
-    protected function redirect($url)
+    protected function redirect($url, $data = [])
     {
+        if (!empty($data)) {
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+
+            foreach ($data as $key => $value) {
+                $_SESSION[$key] = $value;
+            }
+        }
         header("Location: {$url}");
         exit;
     }
