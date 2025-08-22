@@ -61,6 +61,15 @@
         <?= $inline_js ?>
     </script>
 <?php endif; ?>
+
+<?php
+// Plugin hooks - admin_footer
+if (isset($app) && method_exists($app, 'getPluginManager')) {
+    $pluginManager = $app->getPluginManager();
+    $pluginManager->doHook('admin_footer');
+}
+?>
+
 </body>
 
 </html>

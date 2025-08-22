@@ -4,19 +4,28 @@ class Application
 {
     private $router;
     private $database;
+    public $pluginManager;
 
     public function __construct()
     {
         $this->router = new Router();
         $this->database = Database::getInstance();
-        $this->loadPlugins();
+        $this->pluginManager = new PluginManager();
         $this->setupRoutes();
+
+    }
+
+    public function initializePlugins()
+    {
+        $this->pluginManager->loadActivePlugins();
+        $this->pluginManager->doHook('init');
     }
 
     public function run()
     {
         try {
             $this->router->dispatch();
+            $this->pluginManager->doHook('init');
         } catch (RouteNotFoundException $e) {
             http_response_code(404);
 
@@ -73,6 +82,11 @@ class Application
         $this->router->add('admin/tags/edit/{id}', 'TagController@edit', 'POST');
         $this->router->add('admin/tags/delete/{id}', 'TagController@delete', 'POST');
         $this->router->add('admin/plugins', 'PluginController@index');
+        $this->router->add('admin/plugins/activate', 'PluginController@activate', 'POST');
+        $this->router->add('admin/plugins/deactivate', 'PluginController@deactivate', 'POST');
+        $this->router->add('admin/plugins/delete', 'PluginController@delete', 'POST');
+        $this->router->add('admin/plugins/install', 'PluginController@install', 'POST');
+        $this->router->add('admin/plugins/settings/{plugin_name}', 'PluginController@settings');
         $this->router->add('admin/settings', 'SettingsController@index');
         $this->router->add('admin/settings', 'SettingsController@index', 'POST');
 
@@ -91,12 +105,6 @@ class Application
         $this->router->add('{slug}', 'PublicController@page');
     }
 
-    private function loadPlugins()
-    {
-        $pluginManager = new PluginManager();
-        $pluginManager->loadActivePlugins();
-    }
-
     private function handleError($e)
     {
         error_log($e->getMessage());
@@ -106,5 +114,10 @@ class Application
         } else {
             include APP_PATH . '/views/errors/500.php';
         }
+    }
+    
+    public function getPluginManager()
+    {
+        return $this->pluginManager;
     }
 }

@@ -40,4 +40,6 @@ require_once CONFIG_PATH . '/config.php';
 
 // Initialize the application
 $app = new Application();
+$GLOBALS['app'] = $app;
+$app->initializePlugins();
 $app->run();

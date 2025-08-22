@@ -98,6 +98,16 @@
             .sidebar.show {
                 transform: translateX(0);
             }
+        }
+    </style>
+
+    <?php
+    // Plugin hooks - admin_head
+    if (isset($app) && method_exists($app, 'getPluginManager')) {
+        $pluginManager = $app->getPluginManager();
+        $pluginManager->doHook('admin_head');
+    }
+    ?>
 
             .main-content {
                 margin-left: 0;

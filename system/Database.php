@@ -49,6 +49,11 @@ class Database
     {
         return $this->query($sql, $params)->fetch();
     }
+    
+    public function fetch($sql, $params = [])
+    {
+        return $this->query($sql, $params)->fetch();
+    }
 
     public function insert($table, $data)
     {
@@ -69,14 +74,42 @@ class Database
         }
         $fields = implode(', ', $fields);
 
-        $sql = "UPDATE {$table} SET {$fields} WHERE {$where}";
-        return $this->query($sql, array_merge($data, $whereParams));
+        // Convert WHERE clause to use named parameters
+        $whereClause = $where;
+        $processedWhereParams = [];
+        
+        if (!empty($whereParams)) {
+            $counter = 1;
+            foreach ($whereParams as $param) {
+                $placeholder = ":where_param_{$counter}";
+                $whereClause = preg_replace('/\?/', $placeholder, $whereClause, 1);
+                $processedWhereParams[$placeholder] = $param;
+                $counter++;
+            }
+        }
+
+        $sql = "UPDATE {$table} SET {$fields} WHERE {$whereClause}";
+        return $this->query($sql, array_merge($data, $processedWhereParams));
     }
 
     public function delete($table, $where, $params = [])
     {
-        $sql = "DELETE FROM {$table} WHERE {$where}";
-        return $this->query($sql, $params);
+        // Convert WHERE clause to use named parameters
+        $whereClause = $where;
+        $processedParams = [];
+        
+        if (!empty($params)) {
+            $counter = 1;
+            foreach ($params as $param) {
+                $placeholder = ":where_param_{$counter}";
+                $whereClause = preg_replace('/\?/', $placeholder, $whereClause, 1);
+                $processedParams[$placeholder] = $param;
+                $counter++;
+            }
+        }
+
+        $sql = "DELETE FROM {$table} WHERE {$whereClause}";
+        return $this->query($sql, $processedParams);
     }
 
     public function lastInsertId()

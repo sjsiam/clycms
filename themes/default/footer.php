@@ -113,6 +113,15 @@
         <?= $inline_js ?>
     </script>
 <?php endif; ?>
+
+<?php
+// Plugin hooks - clycms_footer
+if (isset($app) && method_exists($app, 'getPluginManager')) {
+    $pluginManager = $app->getPluginManager();
+    $pluginManager->doHook('clycms_footer');
+}
+?>
+
 </body>
 
 </html>

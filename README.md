@@ -102,11 +102,26 @@ Themes are located in the `themes` directory. Each theme should include:
 
 ### Plugin Development
 
-Plugins are stored in the `plugins` directory. Each plugin should:
+Plugins are stored in the `plugins` directory and extend the CMS functionality. The plugin system includes:
 
-- Have its own directory
-- Include a main PHP file with the same name as the directory
-- Follow the plugin API for hooks and filters
+- **Hook System**: Execute code at specific points (init, admin_head, clycms_head, clycms_footer)
+- **Filter System**: Modify content and data before display
+- **Settings Management**: Store and retrieve plugin configuration
+- **Admin Integration**: Add menu items and settings pages
+
+#### Included Plugins
+
+- **Hello World**: Basic plugin demonstrating hooks, filters, and settings
+- **Content Filter**: Shows content modification with reading time and auto-linking
+
+#### Creating Plugins
+
+1. Create a directory in `plugins/`
+2. Add a main PHP file with plugin header information
+3. Use the PluginManager class to register hooks and filters
+4. Implement your plugin functionality
+
+See `plugins/README.md` for detailed development guide and examples.
 
 ## File Structure
 

@@ -14,6 +14,9 @@ abstract class Controller
     protected function view($template, $data = [])
     {
         extract($data);
+        
+        // Make $app available to views for plugin hooks
+        global $app;
 
         $viewFile = APP_PATH . '/views/' . $template . '.php';
 
@@ -61,6 +64,10 @@ abstract class Controller
         }
 
         extract($data);
+        
+        // Make $app available to theme templates for plugin hooks
+        global $app;
+        
         include $themeFile;
     }
 

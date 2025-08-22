@@ -123,6 +123,17 @@
         }
     </style>
 
+    <?php
+    // Plugin hooks - clycms_head
+    if (isset($app) && method_exists($app, 'getPluginManager')) {
+
+        $pluginManager = $app->getPluginManager();
+
+        $pluginManager->doHook('clycms_head');
+    }
+    ?>
+
+
     <!-- Additional CSS from theme -->
     <?php if (isset($additional_css)): ?>
         <?php foreach ($additional_css as $css): ?>
@@ -177,11 +188,11 @@
                         <a class="nav-link" href="/admin">Admin</a>
                     </li>
                     <?php
-                        if (isset($navigations)) {
-                            foreach ($navigations as $nav) {
+                    if (isset($navigations)) {
+                        foreach ($navigations as $nav) {
                             echo '<li class="nav-item"><a class="nav-link" href="/' . $nav['slug'] . '">' . $nav['title'] . '</a></li>';
                         }
-                        }
+                    }
                     ?>
                 </ul>
 
