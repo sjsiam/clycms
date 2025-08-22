@@ -34,9 +34,13 @@ class Application
         $this->router->add('admin/posts/create', 'PostController@create', 'POST');
         $this->router->add('admin/posts/edit/{id}', 'PostController@edit');
         $this->router->add('admin/posts/edit/{id}', 'PostController@edit', 'POST');
+        $this->router->add('admin/posts/delete/{id}', 'PostController@delete', 'POST');
         $this->router->add('admin/pages', 'PageController@index');
+        $this->router->add('admin/pages/create', 'PageController@create');
+        $this->router->add('admin/pages/edit/{id}', 'PageController@edit');
         $this->router->add('admin/media', 'MediaController@index');
         $this->router->add('admin/users', 'UserController@index');
+        $this->router->add('admin/users/create', 'UserController@create');
         $this->router->add('admin/themes', 'ThemeController@index');
         $this->router->add('admin/plugins', 'PluginController@index');
         $this->router->add('admin/settings', 'SettingsController@index');
@@ -48,10 +52,10 @@ class Application
         // Public routes
         $this->router->add('', 'PublicController@home');
         $this->router->add('post/{slug}', 'PublicController@post');
-        $this->router->add('page/{slug}', 'PublicController@page');
+        $this->router->add('search', 'PublicController@search');
+        $this->router->add('/{slug}', 'PublicController@page');
         $this->router->add('category/{slug}', 'PublicController@category');
         $this->router->add('tag/{slug}', 'PublicController@tag');
-        $this->router->add('search', 'PublicController@search');
         $this->router->add('sitemap.xml', 'PublicController@sitemap');
     }
 

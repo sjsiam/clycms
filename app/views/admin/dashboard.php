@@ -1,174 +1,154 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+$page_title = 'Dashboard';
+$page_subtitle = 'Welcome to your CMS administration panel';
+$page_description = 'CMS Dashboard - Manage your content, users, and settings';
+include 'includes/header.php';
+?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - CMS Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .sidebar {
-            height: 100vh;
-            background: #2c3e50;
-            color: white;
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 250px;
-            overflow-y: auto;
-        }
-
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
-        }
-
-        .sidebar .nav-link {
-            color: #ecf0f1;
-            padding: 15px 20px;
-            border-bottom: 1px solid #34495e;
-        }
-
-        .sidebar .nav-link:hover {
-            background: #34495e;
-            color: white;
-        }
-
-        .sidebar .nav-link.active {
-            background: #3498db;
-        }
-
-        .stats-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 20px;
-        }
-
-        .stats-card h3 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
-
-<body>
-    <?php include 'includes/sidebar.php'; ?>
-
-    <div class="main-content">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Dashboard</h1>
-            <div class="d-flex align-items-center">
-                <span class="me-3">Welcome, <?= htmlspecialchars($current_user['name']) ?>!</span>
-                <a href="/admin/logout" class="btn btn-outline-danger btn-sm">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-            </div>
-        </div>
-
-        <!-- Stats Cards -->
-        <div class="row mb-5">
-            <div class="col-md-3">
-                <div class="stats-card">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3><?= $stats['total_posts'] ?></h3>
-                            <p class="mb-0">Total Posts</p>
-                        </div>
-                        <i class="fas fa-file-alt fa-3x opacity-75"></i>
-                    </div>
+<!-- Stats Cards -->
+<div class="row mb-5">
+    <div class="col-md-3">
+        <div class="stats-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h3><?= $stats['total_posts'] ?></h3>
+                    <p class="mb-0">Total Posts</p>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stats-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3><?= $stats['published_posts'] ?></h3>
-                            <p class="mb-0">Published</p>
-                        </div>
-                        <i class="fas fa-check-circle fa-3x opacity-75"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stats-card" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); color: #333;">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3><?= $stats['draft_posts'] ?></h3>
-                            <p class="mb-0">Drafts</p>
-                        </div>
-                        <i class="fas fa-edit fa-3x opacity-75"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stats-card" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333;">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3><?= $stats['total_users'] ?></h3>
-                            <p class="mb-0">Users</p>
-                        </div>
-                        <i class="fas fa-users fa-3x opacity-75"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recent Posts -->
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Recent Posts</h5>
-                <a href="/admin/posts/create" class="btn btn-primary btn-sm">
-                    <i class="fas fa-plus"></i> New Post
-                </a>
-            </div>
-            <div class="card-body">
-                <?php if (empty($recent_posts)): ?>
-                    <p class="text-muted">No posts yet. <a href="/admin/posts/create">Create your first post!</a></p>
-                <?php else: ?>
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Status</th>
-                                    <th>Created</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($recent_posts as $post): ?>
-                                    <tr>
-                                        <td>
-                                            <strong><?= htmlspecialchars($post['title']) ?></strong>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-<?= $post['status'] === 'published' ? 'success' : 'warning' ?>">
-                                                <?= ucfirst($post['status']) ?>
-                                            </span>
-                                        </td>
-                                        <td><?= date('M j, Y', strtotime($post['created_at'])) ?></td>
-                                        <td>
-                                            <a href="/admin/posts/edit/<?= $post['id'] ?>" class="btn btn-sm btn-outline-primary">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <a href="/post/<?= $post['slug'] ?>" class="btn btn-sm btn-outline-secondary" target="_blank">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                <?php endif; ?>
+                <i class="fas fa-file-alt fa-3x opacity-75"></i>
             </div>
         </div>
     </div>
+    <div class="col-md-3">
+        <div class="stats-card" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h3><?= $stats['published_posts'] ?></h3>
+                    <p class="mb-0">Published</p>
+                </div>
+                <i class="fas fa-check-circle fa-3x opacity-75"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-card" style="background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%); color: #333;">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h3><?= $stats['draft_posts'] ?></h3>
+                    <p class="mb-0">Drafts</p>
+                </div>
+                <i class="fas fa-edit fa-3x opacity-75"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-card" style="background: linear-gradient(135deg, #6f42c1 0%, #e83e8c 100%);">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h3><?= $stats['total_users'] ?></h3>
+                    <p class="mb-0">Users</p>
+                </div>
+                <i class="fas fa-users fa-3x opacity-75"></i>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+<!-- Quick Actions -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-bolt"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <a href="/admin/posts/create" class="btn btn-primary w-100">
+                            <i class="fas fa-plus"></i> New Post
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="/admin/pages/create" class="btn btn-success w-100">
+                            <i class="fas fa-file"></i> New Page
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="/admin/media" class="btn btn-info w-100">
+                            <i class="fas fa-upload"></i> Upload Media
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="/admin/users/create" class="btn btn-warning w-100">
+                            <i class="fas fa-user-plus"></i> Add User
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-</html>
+<!-- Recent Posts -->
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="fas fa-clock"></i> Recent Posts</h5>
+        <a href="/admin/posts" class="btn btn-outline-primary btn-sm">
+            View All Posts
+        </a>
+    </div>
+    <div class="card-body">
+        <?php if (empty($recent_posts)): ?>
+            <div class="text-center py-4">
+                <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+                <h5>No posts yet</h5>
+                <p class="text-muted">Get started by creating your first post!</p>
+                <a href="/admin/posts/create" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Create First Post
+                </a>
+            </div>
+        <?php else: ?>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($recent_posts as $post): ?>
+                            <tr>
+                                <td>
+                                    <strong><?= htmlspecialchars($post['title']) ?></strong>
+                                    <?php if ($post['excerpt']): ?>
+                                        <br><small class="text-muted"><?= substr(htmlspecialchars($post['excerpt']), 0, 80) ?>...</small>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <span class="badge bg-<?= $post['status'] === 'published' ? 'success' : ($post['status'] === 'draft' ? 'warning' : 'secondary') ?>">
+                                        <?= ucfirst($post['status']) ?>
+                                    </span>
+                                </td>
+                                <td><?= date('M j, Y', strtotime($post['created_at'])) ?></td>
+                                <td>
+                                    <a href="/admin/posts/edit/<?= $post['id'] ?>" class="btn btn-sm btn-outline-primary" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <?php if ($post['status'] === 'published'): ?>
+                                        <a href="/post/<?= $post['slug'] ?>" class="btn btn-sm btn-outline-secondary" target="_blank" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+
+<?php include 'includes/footer.php'; ?>
