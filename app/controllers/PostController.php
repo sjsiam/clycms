@@ -119,7 +119,7 @@ class PostController extends Controller
         try {
             $data = [
                 'title' => $_POST['title'],
-                'slug' => $this->generateSlug($_POST['slug'] ?: $_POST['title']),
+                'slug' => $this->generateSlug($_POST['slug'] ?: $_POST['title'], $id),
                 'content' => $_POST['content'],
                 'excerpt' => $_POST['excerpt'] ?? '',
                 'status' => $_POST['status'],

@@ -157,7 +157,7 @@ include dirname(__DIR__) . '/includes/header.php';
         </div>
 
         <!-- Tags -->
-        <div class="card">
+        <div class="card mb-4">
             <div class="card-header">
                 <h5><i class="fas fa-tags"></i> Tags</h5>
             </div>
@@ -171,7 +171,7 @@ include dirname(__DIR__) . '/includes/header.php';
                         value="<?= htmlspecialchars(implode(', ', $post_tags ?? [])) ?>">
                     <div class="form-text">Separate tags with commas. New tags will be created automatically.</div>
                 </div>
-                
+
                 <div id="tags-suggestions" class="mt-2" style="display: none;">
                     <small class="text-muted">Popular tags:</small>
                     <div id="popular-tags" class="mt-1"></div>
