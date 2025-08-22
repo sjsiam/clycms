@@ -59,6 +59,12 @@ class Application
         $this->router->add('admin/users/delete/{id}', 'UserController@delete', 'POST');
         $this->router->add('admin/themes', 'ThemeController@index');
         $this->router->add('admin/themes', 'ThemeController@index', 'POST');
+        $this->router->add('admin/tags', 'TagController@index');
+        $this->router->add('admin/tags/create', 'TagController@create');
+        $this->router->add('admin/tags/create', 'TagController@create', 'POST');
+        $this->router->add('admin/tags/edit/{id}', 'TagController@edit');
+        $this->router->add('admin/tags/edit/{id}', 'TagController@edit', 'POST');
+        $this->router->add('admin/tags/delete/{id}', 'TagController@delete', 'POST');
         $this->router->add('admin/plugins', 'PluginController@index');
         $this->router->add('admin/settings', 'SettingsController@index');
         $this->router->add('admin/settings', 'SettingsController@index', 'POST');

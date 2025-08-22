@@ -20,6 +20,9 @@ $currentPath = $_SERVER['REQUEST_URI'];
         <a class="nav-link <?= ($currentPath == '/admin/pages') ? 'active' : '' ?>" href="/admin/pages">
             <i class="fas fa-file me-2"></i> Pages
         </a>
+        <a class="nav-link <?= ($currentPath == '/admin/tags') ? 'active' : '' ?>" href="/admin/tags">
+            <i class="fas fa-tags me-2"></i> Tags
+        </a>
         <a class="nav-link <?= ($currentPath == '/admin/media') ? 'active' : '' ?>" href="/admin/media">
             <i class="fas fa-images me-2"></i> Media
         </a>

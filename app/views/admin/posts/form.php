@@ -156,6 +156,29 @@ include dirname(__DIR__) . '/includes/header.php';
             </div>
         </div>
 
+        <!-- Tags -->
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-tags"></i> Tags</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <input type="text" 
+                        class="form-control" 
+                        name="tags" 
+                        id="tags-input"
+                        placeholder="Enter tags separated by commas..."
+                        value="<?= htmlspecialchars(implode(', ', $post_tags ?? [])) ?>">
+                    <div class="form-text">Separate tags with commas. New tags will be created automatically.</div>
+                </div>
+                
+                <div id="tags-suggestions" class="mt-2" style="display: none;">
+                    <small class="text-muted">Popular tags:</small>
+                    <div id="popular-tags" class="mt-1"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- Featured Image -->
         <div class="card">
             <div class="card-header">
@@ -233,6 +256,54 @@ function generateSlug(title) {
         .trim('-');
     document.getElementById('slug').value = slug;
 }
+
+// Tags functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const tagsInput = document.getElementById('tags-input');
+    const tagsSuggestions = document.getElementById('tags-suggestions');
+    const popularTags = document.getElementById('popular-tags');
+    
+    // Load popular tags
+    loadPopularTags();
+    
+    // Show suggestions on focus
+    tagsInput.addEventListener('focus', function() {
+        tagsSuggestions.style.display = 'block';
+    });
+    
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!tagsInput.contains(e.target) && !tagsSuggestions.contains(e.target)) {
+            tagsSuggestions.style.display = 'none';
+        }
+    });
+    
+    function loadPopularTags() {
+        // This would typically be an AJAX call to get popular tags
+        // For now, we'll show some example tags
+        const exampleTags = ['Technology', 'Web Development', 'PHP', 'JavaScript', 'Tutorial', 'News'];
+        
+        popularTags.innerHTML = '';
+        exampleTags.forEach(tag => {
+            const tagBtn = document.createElement('button');
+            tagBtn.type = 'button';
+            tagBtn.className = 'btn btn-outline-secondary btn-sm me-1 mb-1';
+            tagBtn.textContent = tag;
+            tagBtn.onclick = function() {
+                addTag(tag);
+            };
+            popularTags.appendChild(tagBtn);
+        });
+    }
+    
+    function addTag(tagName) {
+        const currentTags = tagsInput.value.split(',').map(t => t.trim()).filter(t => t);
+        if (!currentTags.includes(tagName)) {
+            currentTags.push(tagName);
+            tagsInput.value = currentTags.join(', ');
+        }
+    }
+});
 
 function previewImage(input) {
     if (input.files && input.files[0]) {

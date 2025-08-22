@@ -95,6 +95,26 @@ class PublicController extends Controller
         ]);
     }
 
+    public function tag($slug)
+    {
+        $tag = new Tag();
+        $tagData = $tag->getBySlug($slug);
+
+        if (!$tagData) {
+            http_response_code(404);
+            $this->renderTheme('404');
+            return;
+        }
+
+        $post = new Post();
+        $posts = $post->getByTag($tagData['id']);
+
+        $this->renderTheme('tag', [
+            'tag' => $tagData,
+            'posts' => $posts
+        ]);
+    }
+
     public function sitemap()
     {
         header('Content-Type: application/xml');
