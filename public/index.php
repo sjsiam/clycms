@@ -1,5 +1,7 @@
 <?php
 
+require __DIR__ . '/../bootstrap/app.php';
+
 define('ROOT_PATH', dirname(__DIR__));
 define('APP_PATH', ROOT_PATH . '/app');
 define('SYSTEM_PATH', ROOT_PATH . '/system');
