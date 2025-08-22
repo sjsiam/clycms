@@ -48,7 +48,7 @@ class PublicController extends Controller
     public function page($slug)
     {
         $post = new Post();
-        $page = $post->getBySlug($slug);
+        $page = $post->getBySlug($slug, 'page');
 
         if (!$page) {
             http_response_code(404);

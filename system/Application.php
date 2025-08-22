@@ -68,12 +68,13 @@ class Application
 
         // Public routes
         $this->router->add('', 'PublicController@home');
+        
         $this->router->add('post/{slug}', 'PublicController@post');
         $this->router->add('search', 'PublicController@search');
         $this->router->add('category/{slug}', 'PublicController@category');
         $this->router->add('tag/{slug}', 'PublicController@tag');
         $this->router->add('sitemap.xml', 'PublicController@sitemap');
-        $this->router->add('/{slug}', 'PublicController@page');
+        $this->router->add('{slug}', 'PublicController@page');
     }
 
     private function loadPlugins()
