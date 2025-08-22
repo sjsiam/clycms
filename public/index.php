@@ -20,6 +20,7 @@ error_reporting(E_ALL);
 spl_autoload_register(function ($class) {
     $paths = [
         SYSTEM_PATH . '/',
+        SYSTEM_PATH . '/exceptions/',
         APP_PATH . '/controllers/',
         APP_PATH . '/models/',
         APP_PATH . '/helpers/'

@@ -27,6 +27,8 @@ class Router
                 return $this->callAction($route['callback'], $matches);
             }
         }
+
+        throw new RouteNotFoundException("No route matched for URI: /$uri");
     }
 
     private function convertPattern($pattern)

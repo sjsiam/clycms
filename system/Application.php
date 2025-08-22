@@ -17,6 +17,15 @@ class Application
     {
         try {
             $this->router->dispatch();
+        } catch (RouteNotFoundException $e) {
+            http_response_code(404);
+
+            $errorPage = THEMES_PATH . '/' . $_ENV['APP_THEME'] . '/404.php';
+            if (file_exists($errorPage)) {
+                include $errorPage;
+            } else {
+                echo "<h1>404 Not Found</h1><p>The page you are looking for does not exist.</p>";
+            }
         } catch (Exception $e) {
             $this->handleError($e);
         }
