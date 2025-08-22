@@ -85,7 +85,7 @@ include dirname(__DIR__) . '/includes/header.php';
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <?php if ($page['status'] === 'published'): ?>
-                                            <a href="/page/<?= $page['slug'] ?>" class="btn btn-sm btn-outline-secondary" target="_blank" title="View">
+                                            <a href="/<?= $page['slug'] ?>" class="btn btn-sm btn-outline-secondary" target="_blank" title="View">
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                         <?php endif; ?>

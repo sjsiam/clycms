@@ -177,8 +177,10 @@
                         <a class="nav-link" href="/admin">Admin</a>
                     </li>
                     <?php
-                        foreach ($navigations as $nav) {
+                        if (isset($navigations)) {
+                            foreach ($navigations as $nav) {
                             echo '<li class="nav-item"><a class="nav-link" href="/' . $nav['slug'] . '">' . $nav['title'] . '</a></li>';
+                        }
                         }
                     ?>
                 </ul>
