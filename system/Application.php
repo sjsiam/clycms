@@ -20,7 +20,7 @@ class Application
         } catch (RouteNotFoundException $e) {
             http_response_code(404);
 
-            $errorPage = THEMES_PATH . '/' . Config::getActiveTheme() . '/404.php';
+            $errorPage = THEMES_PATH . '/' . Setting::get('active_theme', 'default') . '/404.php';
             if (file_exists($errorPage)) {
                 include $errorPage;
             } else {

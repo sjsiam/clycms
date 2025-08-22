@@ -25,19 +25,18 @@ class SettingsController extends Controller
         }
 
         // Load all autoloaded settings
-        $settings = $this->db->fetchAll(
-            "SELECT option_name, option_value FROM options WHERE autoload = 'yes'",
-            []
-        );
+        $settings = [
+            'site_title' => Setting::get('site_title', ''),
+            'site_description' => Setting::get('site_description', ''),
+            'posts_per_page' => Setting::get('posts_per_page', '10'),
+            'date_format' => Setting::get('date_format', 'F j, Y'),
+            'time_format' => Setting::get('time_format', 'g:i a'),
+            'start_of_week' => Setting::get('start_of_week', '0')
+        ];
 
-        // Convert settings to key-value array for easier access in view
-        $settings_data = [];
-        foreach ($settings as $setting) {
-            $settings_data[$setting['option_name']] = $setting['option_value'];
-        }
 
         $this->view('admin/settings/index', [
-            'settings' => $settings_data,
+            'settings' => $settings,
             'success_message' => $success_message ?? null,
             'error_message' => $error_message ?? null
         ]);
@@ -60,36 +59,18 @@ class SettingsController extends Controller
                     throw new Exception("The field '{$field}' is required.");
                 }
 
-                // Check if option exists
-                $existing = $this->db->fetchOne(
-                    "SELECT id FROM options WHERE option_name = ?",
-                    [$field]
-                );
-
-                if ($existing) {
-                    // Update existing option
-                    $this->db->query(
-                        "UPDATE options SET option_value = ? WHERE option_name = ?",
-                        [$_POST[$field], $field]
-                    );
-                } else {
-                    // Insert new option
-                    $this->db->query(
-                        "INSERT INTO options (option_name, option_value, autoload) VALUES (?, ?, ?)",
-                        [$field, $_POST[$field], 'yes']
-                    );
-                }
+                Setting::set($field, trim($_POST[$field]));
             }
 
             $success_message = 'Settings updated successfully!';
-            $settings = $this->db->fetchAll(
-                "SELECT option_name, option_value FROM options WHERE autoload = 'yes'",
-                []
-            );
-            $settings_data = [];
-            foreach ($settings as $setting) {
-                $settings_data[$setting['option_name']] = $setting['option_value'];
-            }
+            $settings = [
+                'site_title' => Setting::get('site_title', ''),
+                'site_description' => Setting::get('site_description', ''),
+                'posts_per_page' => Setting::get('posts_per_page', '10'),
+                'date_format' => Setting::get('date_format', 'F j, Y'),
+                'time_format' => Setting::get('time_format', 'g:i a'),
+                'start_of_week' => Setting::get('start_of_week', '0')
+            ];
 
             $this->redirect('/admin/settings', [
                 'success' => $success_message

@@ -30,10 +30,7 @@ class ThemeController extends Controller
         $themes = $this->getThemesList();
 
         // Get active theme from options table
-        $active_theme = $this->db->fetchOne(
-            "SELECT option_value FROM options WHERE option_name = ?",
-            ['active_theme']
-        )['option_value'] ?? Config::getActiveTheme() ?? 'default';
+        $active_theme = Setting::get('active_theme', 'default');
 
         $this->view('admin/themes/index', [
             'themes' => $themes,
@@ -52,22 +49,7 @@ class ThemeController extends Controller
 
                 if ($action === 'activate') {
                     // Update or insert active theme in options table
-                    $existing = $this->db->fetchOne(
-                        "SELECT id FROM options WHERE option_name = ?",
-                        ['active_theme']
-                    );
-
-                    if ($existing) {
-                        $this->db->query(
-                            "UPDATE options SET option_value = ? WHERE option_name = ?",
-                            [$theme, 'active_theme']
-                        );
-                    } else {
-                        $this->db->query(
-                            "INSERT INTO options (option_name, option_value, autoload) VALUES (?, ?, ?)",
-                            ['active_theme', $theme, 'yes']
-                        );
-                    }
+                    Setting::set('active_theme', $theme);
                     $success_message = "Theme '$theme' activated successfully!";
                 } elseif ($action === 'delete' && $theme !== 'default') {
                     // Delete theme folder (except default)
