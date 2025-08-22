@@ -38,6 +38,7 @@ class ContentFilterPlugin
 
         // Add admin head hook to show plugin is active
         $this->pluginManager->addHook('admin_head', [$this, 'onAdminHead']);
+        $this->pluginManager->addHook('clycms_head', [$this, 'onPublicHead']);
     }
 
     public function onAdminHead()
@@ -55,6 +56,23 @@ class ContentFilterPlugin
         </style>';
 
         echo '<div class="content-filter-active">🎯 Content Filter Plugin is active!</div>';
+    }
+
+    public function onPublicHead()
+    {
+        echo '<style>
+            .content-filtered {
+                border: 2px dashed #007bff;
+                padding: 15px;
+                border-radius: 8px;
+                background: #f0f8ff;
+            }
+            .reading-time {
+                font-size: 0.9em;
+                color: #6c757d;
+                margin-bottom: 10px;
+            }
+        </style>';
     }
 
     public function filterContent($content)
