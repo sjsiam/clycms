@@ -98,6 +98,10 @@
             .sidebar.show {
                 transform: translateX(0);
             }
+
+            .main-content {
+                margin-left: 0;
+            }
         }
     </style>
 
@@ -108,12 +112,6 @@
         $pluginManager->doHook('admin_head');
     }
     ?>
-
-            .main-content {
-                margin-left: 0;
-            }
-        }
-    </style>
 
     <!-- Additional CSS -->
     <?php if (isset($additional_css)): ?>
