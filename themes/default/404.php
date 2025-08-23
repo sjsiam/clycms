@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Page Not Found - ' . Config::get('app.name', 'My CMS Site');
+$page_title = 'Page Not Found - ' . Setting::get('site_title', 'ClyCMS');
 $page_description = 'The page you are looking for could not be found.';
 
 // Additional styles for 404 page

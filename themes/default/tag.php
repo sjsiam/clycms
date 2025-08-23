@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Tag: ' . htmlspecialchars($tag['name']) . ' - ' . Config::get('app.name', 'My CMS Site');
+$page_title = 'Tag: ' . htmlspecialchars($tag['name']) . ' - ' . Setting::get('site_title', 'ClyCMS');
 $page_description = 'Posts tagged with ' . htmlspecialchars($tag['name']) . ($tag['description'] ? ' - ' . htmlspecialchars($tag['description']) : '');
 
 // Additional styles for tag page

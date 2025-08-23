@@ -1,5 +1,5 @@
 <?php
-$post_title = htmlspecialchars($post['meta_title'] ?: $post['title']) . ' - ' . Config::get('app.name', 'My CMS Site');
+$post_title = htmlspecialchars($post['meta_title'] ?: $post['title']) . ' - ' . Setting::get('site_title', 'ClyCMS');
 $post_description = htmlspecialchars($post['meta_description'] ?: $post['excerpt'] ?: substr(strip_tags($post['content']), 0, 160));
 
 // Additional styles for single page

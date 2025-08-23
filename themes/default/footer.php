@@ -4,10 +4,10 @@
             <div class="col-md-4 mb-4">
                 <h5>
                     <i class="fas fa-rocket me-2"></i>
-                    <?= htmlspecialchars(Config::get('app.name', 'My CMS Site')) ?>
+                    <?= htmlspecialchars(Setting::get('site_title', 'ClyCMS')) ?>
                 </h5>
                 <p class="text-muted">
-                    <?= htmlspecialchars(Config::get('app.description', 'A powerful PHP CMS built with MVC architecture')) ?>
+                    <?= htmlspecialchars(Setting::get('site_description', 'A powerful PHP CMS built with MVC architecture')) ?>
                 </p>
             </div>
 
@@ -44,12 +44,12 @@
         <div class="row align-items-center">
             <div class="col-md-6">
                 <p class="text-muted mb-0">
-                    © <?= date('Y') ?> <?= htmlspecialchars(Config::get('app.name', 'My CMS Site')) ?>. All rights reserved.
+                    © <?= date('Y') ?> <?= htmlspecialchars(Setting::get('site_title', 'ClyCMS')) ?>. All rights reserved.
                 </p>
             </div>
             <div class="col-md-6 text-md-end">
                 <small class="text-muted">
-                    Powered by ClyCMS - A modern PHP CMS
+                    Powered by <?= htmlspecialchars(Setting::get('site_title', 'ClyCMS')) ?> - <?= htmlspecialchars(Setting::get('site_description', 'A powerful PHP CMS built with MVC architecture')) ?>
                 </small>
             </div>
         </div>

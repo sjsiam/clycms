@@ -1,6 +1,6 @@
 <?php
-$page_title = Config::get('app.name', 'My CMS Site');
-$page_description = Config::get('app.description', 'A powerful PHP CMS built with MVC architecture');
+$page_title = Setting::get('site_title', 'ClyCMS');
+$page_description = Setting::get('site_description', 'A powerful PHP CMS built with MVC architecture');
 include 'header.php';
 ?>
 
@@ -8,8 +8,8 @@ include 'header.php';
     <div class="container">
         <div class="row justify-content-center text-center">
             <div class="col-lg-8">
-                <h1 class="display-4 mb-4">Welcome to <?= htmlspecialchars(Config::get('app.name', 'My CMS')) ?></h1>
-                <p class="lead mb-4"><?= htmlspecialchars(Config::get('app.description', 'A powerful, modern content management system built with PHP')) ?></p>
+                <h1 class="display-4 mb-4">Welcome to <?= htmlspecialchars(Setting::get('site_title', 'ClyCMS')) ?></h1>
+                <p class="lead mb-4"><?= htmlspecialchars(Setting::get('site_description', 'A powerful, modern content management system built with PHP')) ?></p>
                 <a href="/admin" class="btn btn-light btn-lg">
                     <i class="fas fa-cog me-2"></i>
                     Get Started

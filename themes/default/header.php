@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title><?= htmlspecialchars($page_title ?? Config::get('app.name', 'My CMS Site')) ?></title>
-    <meta name="description" content="<?= htmlspecialchars($page_description ?? Config::get('app.description', 'A powerful PHP CMS')) ?>">
+    <title><?= htmlspecialchars($page_title ?? Setting::get('site_title', 'ClyCMS')) ?></title>
+    <meta name="description" content="<?= htmlspecialchars($page_description ?? Setting::get('site_description', 'A powerful PHP CMS')) ?>">
 
     <?php if (isset($post) && $post): ?>
         <meta property="og:title" content="<?= htmlspecialchars($post['meta_title'] ?: $post['title']) ?>">
@@ -149,7 +149,7 @@
                 "dateModified": "<?= date('c', strtotime($post['updated_at'])) ?>",
                 "publisher": {
                     "@type": "Organization",
-                    "name": "<?= htmlspecialchars(Config::get('app.name', 'My CMS Site')) ?>"
+                    "name": "<?= htmlspecialchars(Setting::get('site_title', 'ClyCMS')) ?>"
                 }
                 <?php if ($post['featured_image']): ?>,
                     "image": "<?= Config::get('app.url') . $post['featured_image'] ?>"
@@ -164,7 +164,7 @@
         <div class="container">
             <a class="navbar-brand" href="/">
                 <i class="fas fa-rocket me-2"></i>
-                <?= htmlspecialchars(Config::get('app.name', 'My CMS Site')) ?>
+                <?= htmlspecialchars(Setting::get('site_title', 'ClyCMS')) ?>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
