@@ -67,7 +67,7 @@ Create a `.env` file in the root directory:
 
 ```dotenv
 DB_HOST=localhost
-DB_DATABASE=cms_db
+DB_DATABASE=clycms
 DB_USERNAME=root
 DB_PASSWORD=
 APP_URL=http://localhost
@@ -99,6 +99,7 @@ Themes are located in the `themes` directory. Each theme should include:
 - `category.php` - Category archive template
 - `search.php` - Search results template
 - `404.php` - Not found template
+- `tag.php` - Tag archive template
 
 ### Plugin Development
 

@@ -6,7 +6,7 @@ This directory contains plugins for ClyCMS. Plugins extend the functionality of 
 
 Each plugin should be in its own directory with the following structure:
 
-```
+```plaintext
 plugins/
 ├── plugin-name/
 │   ├── plugin-name.php    # Main plugin file
@@ -104,6 +104,7 @@ The plugin header comment block is required and must include:
 - **Author**: Your name or organization
 
 Optional fields:
+
 - **Plugin URI**: Link to plugin website
 - **Author URI**: Link to your website
 
@@ -248,4 +249,4 @@ When sharing your plugin:
 
 ---
 
-Happy plugin development! 🚀 
+Happy plugin development! 🚀
