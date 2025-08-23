@@ -52,7 +52,12 @@ class MyAwesomePlugin
     
     public function __construct()
     {
-        $this->pluginManager = new PluginManager();
+        global $app;
+        if (isset($app) && method_exists($app, 'getPluginManager')) {
+            $this->pluginManager = $app->getPluginManager();
+        } else {
+            return;
+        }
         $this->init();
     }
     
